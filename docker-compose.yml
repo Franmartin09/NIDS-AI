@@ -1,0 +1,10 @@
+version: "3"
+services:
+  zeek:
+    build: ./zeek
+    network_mode: "host"
+    volumes:
+      - ./pcap:/pcap
+    cap_add:
+      - NET_ADMIN
+    command: -i af_packet::eth0 local

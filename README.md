@@ -46,7 +46,9 @@ NIDS-AI es un programa en Python diseñado para análisis continuo y masivo de p
 
 ---
 
-![Texto alternativo](app/imagen.png)
+![Main](app/main.png)
+
+![Secondary](app/secondary.png)
 
 #### Contribución
 

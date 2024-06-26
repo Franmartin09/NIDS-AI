@@ -75,10 +75,10 @@ class NIDS_AI_Visual:
             input_frame = ctk.CTkFrame(self.w_detection)
             input_frame.pack(side="top", expand=True, padx=20, pady=20)
 
-            srcip_label = ctk.CTkLabel(input_frame, text="SOURCE IP", fg_color="transparent", anchor='center', font=("Heivana", 20))
+            srcip_label = ctk.CTkLabel(input_frame, text="IP Origen", fg_color="transparent", anchor='center', font=("Heivana", 20))
             srcip_label.grid(row=0, column=0, pady=10, padx=25)
             
-            srcip_label = ctk.CTkLabel(input_frame, text="DESTINATION IP", fg_color="transparent", anchor='center', font=("Heivana", 20))
+            srcip_label = ctk.CTkLabel(input_frame, text="IP Destino", fg_color="transparent", anchor='center', font=("Heivana", 20))
             srcip_label.grid(row=0, column=1, pady=10, padx=25)
 
             srcip_label = ctk.CTkLabel(input_frame, text=f"{data['src_ip']}", fg_color="transparent", anchor='center', font=("Heivana", 15))
@@ -90,10 +90,10 @@ class NIDS_AI_Visual:
             srcip_label = ctk.CTkLabel(input_frame, text="", fg_color="transparent", anchor='center', font=("Heivana", 20))
             srcip_label.grid(row=2, column=0, pady=10, padx=25)
 
-            srcip_label = ctk.CTkLabel(input_frame, text="SOURCE PORT", fg_color="transparent", anchor='center', font=("Heivana", 20))
+            srcip_label = ctk.CTkLabel(input_frame, text="Puerto Origen", fg_color="transparent", anchor='center', font=("Heivana", 20))
             srcip_label.grid(row=3, column=0, pady=10, padx=25)
             
-            srcip_label = ctk.CTkLabel(input_frame, text="DESTINATION PORT", fg_color="transparent", anchor='center', font=("Heivana", 20))
+            srcip_label = ctk.CTkLabel(input_frame, text="Puerto Destino", fg_color="transparent", anchor='center', font=("Heivana", 20))
             srcip_label.grid(row=3, column=1, pady=10, padx=25)
 
             srcip_label = ctk.CTkLabel(input_frame, text=f"{data['src_port']}", fg_color="transparent", anchor='center', font=("Heivana", 15))
@@ -105,14 +105,14 @@ class NIDS_AI_Visual:
             srcip_label = ctk.CTkLabel(input_frame, text="", fg_color="transparent", anchor='center', font=("Heivana", 20))
             srcip_label.grid(row=5, column=0, pady=10, padx=25)
             
-            srcip_label = ctk.CTkLabel(input_frame, text="PROBABILITY", fg_color="transparent", anchor='center', font=("Heivana", 20))
+            srcip_label = ctk.CTkLabel(input_frame, text="Probabilidad", fg_color="transparent", anchor='center', font=("Heivana", 20))
             srcip_label.grid(row=6, columnspan=2, pady=10, padx=25)
 
             srcip_label = ctk.CTkLabel(input_frame, text=f"{data['prediction']} %", fg_color="transparent", anchor='center', font=("Heivana", 15))
             srcip_label.grid(row=7, columnspan=2, pady=10, padx=25)
 
             # Botón para cerrar la ventana
-            ctk.CTkButton(input_frame, text="Close", width=40, height=30, command=self.close_view_detection).grid(row=9, columnspan=2, pady=30, padx=20)
+            ctk.CTkButton(input_frame, text="Cerrar", width=40, height=30, command=self.close_view_detection).grid(row=9, columnspan=2, pady=30, padx=20)
             self.w_detection.mainloop()
             
     
@@ -153,7 +153,7 @@ class NIDS_AI_Visual:
         try:   
 
             if "error" not in data:
-                texto=f"{data['ts']} - src_ip: {data['src_ip']} - Amb una probabilitat de : {data['prediction']}"
+                texto=f"{data['ts']}   ---   IP Origen: {data['src_ip']}   ---   Probabilidad : {data['prediction']} %"
             else:
                 texto=f"{data['error']}"
 

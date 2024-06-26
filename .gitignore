@@ -5,7 +5,5 @@ zeek/logs
 node_modules
 
 # Ignora las carpetas __pycache__
-clase/modulo/__pycache__
-clase/read/__pycache__
-clase/visual/__pycache__
+__pycache__/
 

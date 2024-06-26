@@ -113,13 +113,23 @@ class ReadLog:
                             print(prediction)
                             res = np.argmax(prediction)
                             print("{:.2f}".format(float(np.max(prediction)*100)))
+
+                            log_line = {
+                                "ts": datetime.fromtimestamp(objeto_json.get('ts', 0)).strftime('%Y-%m-%d %H:%M:%S'), 
+                                "src_ip": self.data_log['src_ip'],  
+                                "dst_ip": self.data_log['dst_ip'],  
+                                "src_port": self.data_log['src_port'],  
+                                "dst_port": self.data_log['dst_port'], 
+                                "prediction": "{:.2f}".format(float(np.max(prediction)*100))
+                            }
+
                             if res==1:
-                                log_line = f"Ts:{datetime.fromtimestamp(objeto_json.get('ts', '-')).strftime('%Y-%m-%d %H:%M:%S')}, Src IP: {self.data_log['src_ip']}, Amb una prediccio de un: {"{:.2f}".format(float(np.max(prediction)*100))} %"
                                 app.update_scrollable_frame(log_line)
-                                # app.update_scrollable_frame(log_line)
-                                # self.previous_lines.add(log_line)
                         except (json.JSONDecodeError, IndexError):
-                            app.update_scrollable_frame(f"Error al decodificar JSON o leer fichero")
+                            log_line = {
+                                "error": "Error al decodificar JSON o leer fichero"
+                            }
+                            app.update_scrollable_frame(log_line)
                         self.ultima_posicion += 1
                     
         app.root.after(100, self.read_log, app, model)

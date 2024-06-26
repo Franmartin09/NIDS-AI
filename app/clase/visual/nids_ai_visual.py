@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from PIL import Image, ImageTk
+import json
 
 class NIDS_AI_Visual:
     
@@ -25,6 +26,7 @@ class NIDS_AI_Visual:
         self.out = ctk.CTkImage(dark_image=out_image, size=(24, 24))
 
         self.create_widgets()
+        self.w_detection = ""
         self.v_detection = False
         self.view_detection("")
         self.execute_bool = False
@@ -58,18 +60,65 @@ class NIDS_AI_Visual:
     
     def view_detection(self, data):
         if self.v_detection == True:
-            w_detection = ctk.CTk()
-            w_detection.title("NIDS-AI")
-            w_detection.resizable(False, False)
+            self.w_detection = ctk.CTk()
+            self.w_detection.title("NIDS-AI")
+            self.w_detection.resizable(False, False)
 
-            input_frame = ctk.CTkFrame(w_detection)
-            input_frame.pack(expand=True, padx=20, pady=20)
-            ctk.CTkButton(input_frame, text="Close", width=24, height=24)
-            w_detection.mainloop()
+            window_width = 512
+            window_height = 512
+            screen_width = self.w_detection.winfo_screenwidth()
+            screen_height = self.w_detection.winfo_screenheight()
+            x_cordinate = int((screen_width/2) - (window_width/2))
+            y_cordinate = int((screen_height/2) - (window_height/2))
+            self.w_detection.geometry(f"{window_width}x{window_height}+{x_cordinate}+{y_cordinate}")
+
+            input_frame = ctk.CTkFrame(self.w_detection)
+            input_frame.pack(side="top", expand=True, padx=20, pady=20)
+
+            srcip_label = ctk.CTkLabel(input_frame, text="SOURCE IP", fg_color="transparent", anchor='center', font=("Heivana", 20))
+            srcip_label.grid(row=0, column=0, pady=10, padx=25)
+            
+            srcip_label = ctk.CTkLabel(input_frame, text="DESTINATION IP", fg_color="transparent", anchor='center', font=("Heivana", 20))
+            srcip_label.grid(row=0, column=1, pady=10, padx=25)
+
+            srcip_label = ctk.CTkLabel(input_frame, text=f"{data['src_ip']}", fg_color="transparent", anchor='center', font=("Heivana", 15))
+            srcip_label.grid(row=1, column=0, pady=10, padx=25)
+            
+            srcip_label = ctk.CTkLabel(input_frame, text=f"{data['dst_ip']}", fg_color="transparent", anchor='center', font=("Heivana", 15))
+            srcip_label.grid(row=1, column=1, pady=10, padx=25)
+            
+            srcip_label = ctk.CTkLabel(input_frame, text="", fg_color="transparent", anchor='center', font=("Heivana", 20))
+            srcip_label.grid(row=2, column=0, pady=10, padx=25)
+
+            srcip_label = ctk.CTkLabel(input_frame, text="SOURCE PORT", fg_color="transparent", anchor='center', font=("Heivana", 20))
+            srcip_label.grid(row=3, column=0, pady=10, padx=25)
+            
+            srcip_label = ctk.CTkLabel(input_frame, text="DESTINATION PORT", fg_color="transparent", anchor='center', font=("Heivana", 20))
+            srcip_label.grid(row=3, column=1, pady=10, padx=25)
+
+            srcip_label = ctk.CTkLabel(input_frame, text=f"{data['src_port']}", fg_color="transparent", anchor='center', font=("Heivana", 15))
+            srcip_label.grid(row=4, column=0, pady=10, padx=25)
+            
+            srcip_label = ctk.CTkLabel(input_frame, text=f"{data['dst_port']}", fg_color="transparent", anchor='center', font=("Heivana", 15))
+            srcip_label.grid(row=4, column=1, pady=10, padx=25)
+
+            srcip_label = ctk.CTkLabel(input_frame, text="", fg_color="transparent", anchor='center', font=("Heivana", 20))
+            srcip_label.grid(row=5, column=0, pady=10, padx=25)
+            
+            srcip_label = ctk.CTkLabel(input_frame, text="PROBABILITY", fg_color="transparent", anchor='center', font=("Heivana", 20))
+            srcip_label.grid(row=6, columnspan=2, pady=10, padx=25)
+
+            srcip_label = ctk.CTkLabel(input_frame, text=f"{data['prediction']} %", fg_color="transparent", anchor='center', font=("Heivana", 15))
+            srcip_label.grid(row=7, columnspan=2, pady=10, padx=25)
+
+            # Botón para cerrar la ventana
+            ctk.CTkButton(input_frame, text="Close", width=40, height=30, command=self.close_view_detection).grid(row=9, columnspan=2, pady=30, padx=20)
+            self.w_detection.mainloop()
             
     
     def close_view_detection(self):
         self.v_detection = False
+        self.w_detection.destroy()
     
     def execute(self):
         if not self.execute_bool:
@@ -102,16 +151,20 @@ class NIDS_AI_Visual:
 
     def update_scrollable_frame(self, data):
         try:   
+
+            if "error" not in data:
+                texto=f"{data['ts']} - src_ip: {data['src_ip']} - Amb una probabilitat de : {data['prediction']}"
+            else:
+                texto=f"{data['error']}"
+
             row_frame = ctk.CTkFrame(self.scrollable_frame, fg_color="transparent")
             row_frame.pack(fill="x", padx=5, pady=5)
-
-            # Crear y añadir el label al frame
-            ctk.CTkLabel(row_frame, text=data).pack(side="left", anchor="w")
+            ctk.CTkLabel(row_frame, text=texto).pack(side="left", anchor="w")
 
             # Crear y añadir el botón al frame
-            ctk.CTkButton(row_frame, text="i", command=lambda d=data: self.info(d)).pack(side="left", padx=5)
+            if "error" not in data:
+                ctk.CTkButton(row_frame, text="i", command=lambda d=data: self.info(d)).pack(side="left", padx=5)
 
-            # self.previous_lines.add(data) 
             self.scrollable_frame.update_idletasks()  # Update the scrollable frame to reflect new changes
             self.scrollable_frame._parent_canvas.yview_moveto(1.0)  # Scroll to the bottom
         except:

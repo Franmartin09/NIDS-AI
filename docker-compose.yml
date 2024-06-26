@@ -1,10 +1,59 @@
-version: "3"
+version: '3.8'
+
 services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - ELASTIC_USERNAME="elastic"
+      - ELASTIC_PASSWORD="123456789"
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.10.1
+    container_name: kibana
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - ELASTICSEARCH_USERNAME="elastic"
+      - ELASTICSEARCH_PASSWORD="123456789"
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+
   zeek:
     build: ./zeek
     network_mode: "host"
     volumes:
-      - ./pcap:/pcap
+      - ./zeek/logs:/logs
     cap_add:
       - NET_ADMIN
     command: -i af_packet::eth0 local
+    depends_on:
+      - elasticsearch
+      - kibana
+
+  filebeat:
+    build: ./filebeat
+    container_name: filebeat
+    volumes:
+      - ./zeek/logs:/logs
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - ELASTICSEARCH_USERNAME="elastic"
+      - ELASTICSEARCH_PASSWORD="123456789"
+    depends_on:
+      - elasticsearch
+      - kibana
+      - zeek
+
+volumes:
+  esdata:
+    driver: local

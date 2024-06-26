@@ -1,0 +1,44 @@
+# filebeat/filebeat.yml
+filebeat.inputs:
+- type: log
+  enabled: true
+  paths:
+    - /logs/*.log
+
+output.elasticsearch:
+  hosts: ["http://elasticsearch:9200"]
+  username: "${ELASTICSEARCH_USERNAME}"
+  password: "${ELASTICSEARCH_PASSWORD}"
+
+setup.kibana:
+  host: "http://kibana:5601"
+
+filebeat.modules:
+  - module: zeek
+    capture_loss:
+      enabled: true
+      var.paths: ["/logs/capture_loss.log"]
+    connection:
+      enabled: true
+      var.paths: ["/logs/conn.log"]
+    dce_rpc:
+      enabled: true
+      var.paths: ["/logs/dce_rpc.log"]
+    dhcp:
+      enabled: true
+      var.paths: ["/logs/dhcp.log"]
+    dns:
+      enabled: true
+      var.paths: ["/logs/dns.log"]
+    http:
+      enabled: true
+      var.paths: ["/logs/http.log"]
+    ssl:
+      enabled: true
+      var.paths: ["/logs/ssl.log"]
+    weird:
+      enabled: true
+      var.paths: ["/logs/weird.log"]
+    files:
+      enabled: true
+      var.paths: ["/logs/files.log"]

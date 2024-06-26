@@ -95,7 +95,6 @@ RUN apk --no-cache add ca-certificates zlib openssl libstdc++ libpcap libgcc fts
 
 COPY --from=builder /usr/local/zeek /usr/local/zeek
 COPY local.zeek /usr/local/zeek/share/zeek/site/local.zeek
-COPY my_script.zeek /usr/local/zeek/share/zeek/site/my_script.zeek
 
 # Add a few zeek scripts
 ADD https://raw.githubusercontent.com/blacktop/docker-zeek/master/scripts/conn-add-geodata.zeek \
@@ -105,7 +104,7 @@ ADD https://raw.githubusercontent.com/blacktop/docker-zeek/master/scripts/log-pa
 
 COPY --from=geoip /usr/share/GeoIP /usr/share/GeoIP
 
-WORKDIR /pcap
+WORKDIR /logs
 
 ENV ZEEKPATH .:/data/config:/usr/local/zeek/share/zeek:/usr/local/zeek/share/zeek/policy:/usr/local/zeek/share/zeek/site
 ENV PATH $PATH:/usr/local/zeek/bin

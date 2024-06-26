@@ -12,6 +12,7 @@ class NIDS_AI_Visual:
         self.root.wm_iconbitmap()
         self.root.iconphoto(False, self.root.iconpath)
 
+
         ctk.set_appearance_mode("dark")
 
         self.current_mode = 0
@@ -25,6 +26,8 @@ class NIDS_AI_Visual:
         self.out = ctk.CTkImage(dark_image=out_image, size=(24, 24))
 
         self.create_widgets()
+        self.v_detection = False
+        self.view_detection("")
         self.execute_bool = False
         self.previous_lines = set()
         print("NIDSVisualClass inicialized!")
@@ -53,6 +56,21 @@ class NIDS_AI_Visual:
 
         self.button_out = ctk.CTkButton(self.root, image=self.out, text="", command=self.close, width=24, height=24)
         self.button_out.place(x=25, y=512)
+    
+    def view_detection(self, data):
+        if self.v_detection == True:
+            w_detection = ctk.CTk()
+            w_detection.title("NIDS-AI")
+            w_detection.resizable(False, False)
+
+            input_frame = ctk.CTkFrame(w_detection)
+            input_frame.pack(expand=True, padx=20, pady=20)
+            ctk.CTkButton(input_frame, text="Close", width=24, height=24)
+            w_detection.mainloop()
+            
+    
+    def close_view_detection(self):
+        self.v_detection = False
     
     def execute(self):
         if not self.execute_bool:
@@ -83,27 +101,23 @@ class NIDS_AI_Visual:
     def close(self):
         self.root.destroy()
 
-    # def read_log(self):
-    #     if self.execute_bool:
-    #         with open("pcap/conn.log", 'r') as file:
-    #             for line in file:
-    #                 try:
-    #                     log_entry = json.loads(line)
-    #                     src_ip = log_entry.get("id.orig_h", "")
-    #                     ts = log_entry.get("ts", "")
-    #                     log_line = f"Timestamp: {ts}, Src IP: {src_ip}"
-    #                     if log_line not in self.previous_lines:
-    #                         self.update_scrollable_frame(log_line)
-    #                         self.previous_lines.add(log_line)
-    #                 except json.JSONDecodeError:
-    #                     continue
-    #     self.root.after(100, self.read_log)
-
     def update_scrollable_frame(self, data):
         try:   
-            ctk.CTkLabel(self.scrollable_frame, text=data).pack(anchor="w")
+            row_frame = ctk.CTkFrame(self.scrollable_frame, fg_color="transparent")
+            row_frame.pack(fill="x", padx=5, pady=5)
+
+            # Crear y añadir el label al frame
+            ctk.CTkLabel(row_frame, text=data).pack(side="left", anchor="w")
+
+            # Crear y añadir el botón al frame
+            ctk.CTkButton(row_frame, text="i", command=lambda d=data: self.info(d)).pack(side="left", padx=5)
+
             # self.previous_lines.add(data) 
             self.scrollable_frame.update_idletasks()  # Update the scrollable frame to reflect new changes
             self.scrollable_frame._parent_canvas.yview_moveto(1.0)  # Scroll to the bottom
         except:
             pass
+
+    def info(self, data):
+        self.v_detection=True
+        self.view_detection(data)

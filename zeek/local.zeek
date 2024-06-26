@@ -4,7 +4,7 @@
 
 # Installation-wide salt value that is used in some digest hashes, e.g., for
 # the creation of file IDs. Please change this to a hard to guess value.
-redef digest_salt = "blacktop";
+redef digest_salt = "franma";
 
 # This script logs which scripts were loaded during each run.
 @load misc/loaded-scripts
@@ -116,11 +116,6 @@ redef digest_salt = "blacktop";
 # @load json-streaming-logs
 # redef JSONStreaming::disable_default_logs=T;
 
-# Redirigir todos los logs al mismo archivo final.log
-redef LogAscii::use_json=T;
+redef LogAscii::use_json=T &redef;
 
 
-###############################################################
-######################## MY SCRIPT ############################
-###############################################################
-#@load ./my_script.zeek

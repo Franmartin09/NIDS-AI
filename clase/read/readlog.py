@@ -9,6 +9,7 @@ class ReadLog:
     def __init__(self):
         self.ultima_posicion = 0
         self.data_log = {}
+        self.data_log_detected = {}
         print("ReadClass initialized!")
 
     def inicialice_data_log(self):
@@ -60,7 +61,7 @@ class ReadLog:
 
     def read_log(self, app, model):
         if app.execute_bool:
-            with open("pcap/conn.log", 'r') as file:
+            with open("zeek/logs/conn.log", 'r') as file:
                 file.seek(self.ultima_posicion)
                 lineas = file.read().splitlines()
                 if len(lineas)>self.ultima_posicion:
@@ -85,10 +86,10 @@ class ReadLog:
                                 "dst_ip_bytes": objeto_json.get('resp_ip_bytes', '-')
                             })
 
-                            http_log = "pcap/http.log"
-                            dns_log = "pcap/dns.log"
-                            ssl_log = "pcap/ssl.log"
-                            weird_log = "pcap/weird.log"
+                            http_log = "zeek/logs/http.log"
+                            dns_log = "zeek/logs/dns.log"
+                            ssl_log = "zeek/logs/ssl.log"
+                            weird_log = "zeek/logs/weird.log"
 
                             data_dns = self.read_dns(dns_log, objeto_json.get('uid', ''))
                             data_ssl = self.read_ssl(ssl_log, objeto_json.get('uid', ''))
@@ -106,7 +107,7 @@ class ReadLog:
 
                             if data_weird:
                                 self.data_log.update(data_weird)
-
+                            # print(self.data_log)
                             data = model.preproces(self.data_log)
                             # print(data)
                             prediction = model.predict(data)
@@ -114,7 +115,7 @@ class ReadLog:
                             res = np.argmax(prediction)
                             print("{:.2f}".format(float(np.max(prediction)*100)))
                             if res==1:
-                                log_line = f"Ts:{datetime.fromtimestamp(objeto_json.get('ts', '-')).strftime('%Y-%m-%d %H:%M:%S')}, Src IP: {self.data_log['src_ip']}, Proto: {self.data_log['proto']}, Amb una prediccio de un: {"{:.2f}".format(float(np.max(prediction)*100))} %"
+                                log_line = f"Ts:{datetime.fromtimestamp(objeto_json.get('ts', '-')).strftime('%Y-%m-%d %H:%M:%S')}, Src IP: {self.data_log['src_ip']}, Amb una prediccio de un: {"{:.2f}".format(float(np.max(prediction)*100))} %"
                                 app.update_scrollable_frame(log_line)
                                 # app.update_scrollable_frame(log_line)
                                 # self.previous_lines.add(log_line)

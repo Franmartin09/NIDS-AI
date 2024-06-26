@@ -16,7 +16,6 @@ def main():
     app = NIDS_AI_Visual(root)
     read = ReadLog()
     
-    # app.read_log()
     read.read_log(app, model)
     root.mainloop()
 

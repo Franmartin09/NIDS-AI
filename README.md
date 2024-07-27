@@ -2,47 +2,47 @@
 
 ---
 
-#### Descripción
-NIDS-AI es un programa en Python diseñado para análisis continuo y masivo de posibles intrusiones utilizando herramientas como Zeek, Filebeat, Elasticsearch y Kibana, integradas bajo un entorno Docker. Este sistema aprovecha un modelo preentrenado de machine learning para mejorar la detección de amenazas en redes.
+#### Description
+
+NIDS-AI is a Python program designed for continuous and large-scale analysis of potential intrusions using tools such as Zeek, Filebeat, Elasticsearch, and Kibana, all integrated within a Docker environment. This system leverages a pre-trained machine learning model to enhance threat detection in networks.
 
 ---
+#### Installation
 
-#### Instalación
-
-1. **Clonar el repositorio:**
+1. **Clone the repository:**
    ```bash
-   git clone <URL_DEL_REPOSITORIO>
+   git clone https://github.com/Franmartin09/NIDS-AI.git
    cd NIDS-AI
    ```
 
-2. **Instalar dependencias:**
-   Para instalar las dependencias necesarias, ejecuta uno de los siguientes comandos:
-   - Utilizando `pip` directamente:
+2. **Install dependencies:**
+   To install the necessary dependencies, run one of the following commands:
+   - Using `pip` directly:
      ```bash
      pip install -r requirements.txt
      ```
-   - Ejecutando el script Python que maneja la instalación de requisitos:
+   - Running the Python script that handles the installation of requirements:
      ```bash
      python install_requirements.py
      ```
 
 ---
 
-#### Uso
+#### Usage
 
-1. **Ejemplo de uso:**
+1. **Example usage:**
 
-   Para ejecutar NIDS-AI, sigue estos pasos:
+   To run NIDS-AI, follow these steps:
    ```bash
-   docker-compose up -d   # Iniciar contenedores Docker necesarios
-   python3 /app/main.py   # Iniciar el análisis de intrusiones
+   docker-compose up -d   # Start the required Docker containers
+   python3 /app/main.py   # Start the intrusion analysis
    ```
 
-2. **Descripción del flujo:**
+2. **Flow description:**
 
-   La aplicación también cuenta con una interfaz visual que incluye dos botones principales: Ejecutar y Parar.
+   The application also features a graphical interface with two main buttons: Run and Stop.
    
-   Cuando se ejecuta la aplicación utilizando el botón correspondiente, NIDS-AI comienza a capturar datos de la herramienta Zeek y los envía al modelo de IA para su análisis. Si el modelo detecta una amenaza, la aplicación muestra una línea indicando la naturaleza de la amenaza detectada en tiempo real dentro de la misma interfaz gráfica.
+   When the application is run using the corresponding button, NIDS-AI begins capturing data from the Zeek tool and sends it to the AI model for analysis. If the model detects a threat, the application displays a line indicating the nature of the threat detected in real-time within the same graphical interface.
 
 ---
 
@@ -52,23 +52,30 @@ NIDS-AI es un programa en Python diseñado para análisis continuo y masivo de p
   <img src="app/secondary.png" alt="Secondary">
 </p>
 
-#### Contribución
 
-- Si deseas contribuir al desarrollo de NIDS-AI, por favor sigue estos pasos:
-  1. Haz un fork del repositorio.
-  2. Crea una rama con una nueva funcionalidad (`git checkout -b feature/nueva-funcionalidad`).
-  3. Realiza tus cambios y haz commit de ellos (`git commit -am 'Añadida nueva funcionalidad'`).
-  4. Haz push a la rama (`git push origin feature/nueva-funcionalidad`).
-  5. Crea un pull request en GitHub.
+#### Contribution
 
----
-
-#### Licencia
-
-Este proyecto está licenciado bajo la [Licencia MIT](LICENSE).
+- If you wish to contribute to the development of NIDS-AI, please follow these steps:
+  1. Fork the repository.
+  2. Create a branch with your new feature (`git checkout -b feature/new-feature`).
+  3. Make your changes and commit them (`git commit -am 'Added new feature'`).
+  4. Push to the branch (`git push origin feature/new-feature`).
+  5. Create a pull request on GitHub.
 
 ---
 
-#### Contacto
+#### License
 
-Para cualquier consulta, sugerencia o problema relacionado con NIDS-AI, por favor contacta a [Fran Martin] <franmartinaguilar@gmail.com>.
+This project is licensed under the [MIT License](https://github.com/Franmartin09/NIDS-AI/blob/main/LICENSE).
+
+---
+
+#### Contact
+
+For any questions, suggestions, or issues related to NIDS-AI, please contact via email: [Fran Martin](mailto:franmartinaguilar@gmail.com).
+
+---
+
+
+
+
